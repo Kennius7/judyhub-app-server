@@ -50,17 +50,6 @@ export default async function handler(req, res) {
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
             const { allProducts } = filteredData;
-            // const fetchedData = {
-            //     name: name, 
-            //     email: email, 
-            //     number: number, 
-            //     batchNum: batchNum, 
-            //     courseDetails: courseDetails, 
-            //     courseProgress: courseProgress,
-            //     id: id,
-            //     profilePics: profilePics,
-            // };
-
             console.log(allProducts);
             return res.status(200).json({ data: allProducts, message: "Data was fetched successfully" });
         } catch (error) {

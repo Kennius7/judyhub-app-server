@@ -24,12 +24,12 @@ export default async function handler(req, res) {
         try {
             const { allProducts } = req.body;
             const docRef = doc(db, "judyhub-products", "products");
-            await updateDoc(docRef, allProducts);
+            await updateDoc(docRef, { allProducts });
             const message = `Successfully posted data`;
             return res.status(200).json({ success: true, message: message });
         } catch (error) {
             console.log("Checking POST Method ERROR...", res.statusCode);
-            console.log(error.code);
+            console.log(error);
             return res.status(500).json({ error: `Error: ${error.message}` });
         }
     }

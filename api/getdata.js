@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         // })
 
         try {
-            const querySnapshot = await getDocs(collection(db, "judyhub-products", "products"));
+            const querySnapshot = await getDocs(collection(db, "judyhub-products"));
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
             const { allProducts } = filteredData;

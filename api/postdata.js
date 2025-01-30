@@ -22,9 +22,9 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { products } = req.body;
+            const { allProducts } = req.body;
             const docRef = doc(db, "judyhub-products", "products");
-            await updateDoc(docRef, products);
+            await updateDoc(docRef, allProducts);
             const message = `Successfully posted data`;
             return res.status(200).json({ success: true, message: message });
         } catch (error) {

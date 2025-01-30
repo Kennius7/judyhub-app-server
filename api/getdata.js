@@ -49,8 +49,8 @@ export default async function handler(req, res) {
             const querySnapshot = await getDocs(collection(db, "judyhub-products"));
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
-            const { allProducts } = filteredData;
-            console.log(allProducts);
+            const allProducts = filteredData[0].allProducts;
+            console.log("Arrayed Data:>>>>", allProducts);
             return res.status(200).json({ data: allProducts, message: "Data was fetched successfully" });
         } catch (error) {
             console.log("Checking ERROR FETCHING...", res.statusCode, error.message);

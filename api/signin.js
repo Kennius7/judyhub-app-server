@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
 
-const shosanAppSecretKey = process.env.SHOSAN_APP_SECRET_KEY;
+const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
 
 const admin = require("firebase-admin");
 
@@ -39,8 +39,8 @@ export default async function handler(req, res) {
         try {
             const { email, password } = req.body;
             const userInfo = { email: email };
-            const token = jwt.sign(userInfo, shosanAppSecretKey, { expiresIn: "1h" });
-            // console.log("Token: >>>", token);
+            const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1h" });
+            console.log("Token: >>>", token);
 
             const newUser = await signInWithEmailAndPassword(auth, email, password);
             const message = `Welcome, ${newUser?.user?.displayName.split(" ")[0]}`;

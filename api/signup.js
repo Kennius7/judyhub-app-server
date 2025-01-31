@@ -23,15 +23,12 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { name, email, number, password, batchNum, courseDetails, courseProgress } = req.body;
+            const { name, email, number, password } = req.body;
             const authInstance = getAuth();
             const newUser = await createUserWithEmailAndPassword(authInstance, email, password);
             await updateProfile(newUser.user, { displayName: name });
-            await addDoc(
-                collection(db, "User_Data"), 
-                { name, email, number, password, batchNum, courseDetails, courseProgress }
-            );
-            // console.log(newUser);
+            await addDoc(collection(db, "User_Data"), { name, email, number, password });
+            console.log(newUser);
             const message = `Successfully signed up, ${newUser?.user?.displayName.split(" ")[0]}`;
             console.log(message);
             return res.status(200).json({ success: true, message: message });

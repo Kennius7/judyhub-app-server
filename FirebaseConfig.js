@@ -8,8 +8,6 @@ require('dotenv').config();
 
 
 
-
-
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "judy-hub-ecommerce.firebaseapp.com",

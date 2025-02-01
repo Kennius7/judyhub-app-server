@@ -38,17 +38,25 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         try {
             const { email, password } = req.body;
-            const userInfo = { email: email };
+            const newUser = await signInWithEmailAndPassword(auth, email, password);
+            
+            if (!newUser || !newUser.user) {
+                return res.status(401).json({ success: false, error: "Invalid credentials" });
+            }
+
+            // const userInfo = { email: email };
+            const userInfo = { email: newUser.user.email, uid: newUser.user.uid };
             const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1h" });
             console.log("Token: >>>", token);
-
-            const newUser = await signInWithEmailAndPassword(auth, email, password);
-            const message = `Welcome, ${newUser?.user?.displayName.split(" ")[0]}`;
+            // const message = `Welcome, ${newUser?.user?.displayName.split(" ")[0]}`;
+            const message = `Welcome, ${newUser.user.displayName ? newUser.user.displayName.split(" ")[0] : "User"}`;
             console.log(message);
-            return res.status(200).json({ message: message, token: token });
+            return res.status(200).json({ success: true, message: message, token: token });
         } catch (error) {
             console.log("Checking POST Method ERROR...", res.statusCode, error);
-            return res.json({ error: `Error: ${error.message}` });
+            console.error("Authentication Error:", error.message);
+            return res.status(401).json({ success: false, error: `Error: ${error.message}` });
+            // return res.status(401).json({ success: false, error: "Invalid email or password" });
         }
     }
 

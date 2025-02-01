@@ -44,11 +44,9 @@ export default async function handler(req, res) {
                 return res.status(401).json({ success: false, error: "Invalid credentials" });
             }
 
-            // const userInfo = { email: email };
             const userInfo = { email: newUser.user.email, uid: newUser.user.uid };
             const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1h" });
             console.log("Token: >>>", token);
-            // const message = `Welcome, ${newUser?.user?.displayName.split(" ")[0]}`;
             const message = `Welcome, ${newUser.user.displayName ? newUser.user.displayName.split(" ")[0] : "User"}`;
             console.log(message);
             return res.status(200).json({ success: true, message: message, token: token });
@@ -56,7 +54,6 @@ export default async function handler(req, res) {
             console.log("Checking POST Method ERROR...", res.statusCode, error);
             console.error("Authentication Error:", error.message);
             return res.status(401).json({ success: false, error: `Error: ${error.message}` });
-            // return res.status(401).json({ success: false, error: "Invalid email or password" });
         }
     }
 

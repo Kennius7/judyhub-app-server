@@ -24,24 +24,40 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         try {
             const { name, email, number, password } = req.body;
+
+            if (!name || !email || !number || !password) {
+                return res.status(400).json({ success: false, error: "All fields are required" });
+            }
+
             const authInstance = getAuth();
             const newUser = await createUserWithEmailAndPassword(authInstance, email, password);
             await updateProfile(newUser.user, { displayName: name });
-            await addDoc(collection(db, "User_Data"), { name, email, number, password });
+            await addDoc(collection(db, "User_Data"), { name, email, number });
+            console.log("User Created:", newUser.user.email);
             console.log(newUser);
-            const message = `Successfully signed up, ${newUser?.user?.displayName.split(" ")[0]}`;
+            const displayName = newUser?.user?.displayName.split(" ")[0] || "User";
+            const message = `Successfully signed up, ${displayName}`;
             console.log(message);
             return res.status(200).json({ success: true, message: message });
         } catch (error) {
-            console.log("Checking POST Method ERROR...", res.statusCode);
+            console.log("Checking POST Method ERROR...", res.statusCode, error.message);
 
+            let errorMessage = "Something went wrong";
             if (error.code === "auth/email-already-in-use") {
-                console.log(error.code);
-                return res.status(500).json({ error: `Error: ${error.message}` });
-            } else {
-                console.log(error.code);
-                return res.status(500).json({ error: `Error: ${error.message}` });
+                errorMessage = "Email is already in use. Please use a different one.";
+            } else if (error.code === "auth/weak-password") {
+                errorMessage = "Password is too weak. Please choose a stronger password.";
             }
+
+            return res.status(400).json({ success: false, error: errorMessage });
+
+            // if (error.code === "auth/email-already-in-use") {
+            //     console.log(error.code);
+            //     return res.status(500).json({ error: `Error: ${error.message}` });
+            // } else {
+            //     console.log(error.code);
+            //     return res.status(500).json({ error: `Error: ${error.message}` });
+            // }
         }
     }
 

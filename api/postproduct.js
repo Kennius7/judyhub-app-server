@@ -24,6 +24,10 @@ export default async function handler(req, res) {
         try {
             const { id, productName, newPrice, oldPrice, category, tags, imageUrl } = req.body;
 
+            if (!id || !productName || newPrice === undefined || oldPrice === undefined || !category) {
+                return res.status(400).json({ success: false, error: "Missing required fields!" });
+            }
+
             const docRef = doc(db, "judyhub-products", "products");
             const docSnap = await getDoc(docRef);
 
@@ -32,20 +36,29 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: "Document does not exist!" });
             }
 
-            const updatedData = {
-                id: id,
-                name: productName,
-                category: category,
-                tags: tags,
-                image: imageUrl,
-                newPrice: newPrice,
-                oldPrice: oldPrice,
-            };
+            // const updatedData = {
+            //     id: id,
+            //     name: productName,
+            //     category: category,
+            //     tags: tags,
+            //     image: imageUrl,
+            //     newPrice: newPrice,
+            //     oldPrice: oldPrice,
+            // };
 
             const currentData = docSnap.data();
-            const updatedArray = currentData.allProducts.map(item => {
-                item.id === id ? { ...item, ...updatedData } : item 
-            });
+            if (!currentData.allProducts || !Array.isArray(currentData.allProducts)) {
+                return res.status(400).json({ success: false, error: "Invalid product structure in database!" });
+            }
+            const updatedArray = currentData.allProducts.map((item) =>
+                item.id === id
+                    ? { ...item, name: productName, category, tags, image: imageUrl, newPrice, oldPrice }
+                    : item
+            );
+
+            // const updatedArray = currentData.allProducts.map(item => {
+            //     item.id === id ? { ...item, ...updatedData } : item 
+            // });
             await updateDoc(docRef, { allProducts: updatedArray });
             const message = `Successfully posted product data`;
             console.log(message);

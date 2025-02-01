@@ -43,10 +43,10 @@ export default async function handler(req, res) {
             };
 
             const currentData = docSnap.data();
-            const updatedArray = currentData.arrayField.map(item => {
+            const updatedArray = currentData.allProducts.map(item => {
                 item.id === id ? { ...item, ...updatedData } : item 
             });
-            await updateDoc(docRef, { arrayField: updatedArray });
+            await updateDoc(docRef, { allProducts: updatedArray });
             const message = `Successfully posted product data`;
             console.log(message);
             return res.status(200).json({ success: true, message: message });

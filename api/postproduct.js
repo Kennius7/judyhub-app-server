@@ -22,9 +22,10 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { id, productName, newPrice, oldPrice, category, tags, imageUrl } = req.body;
+            const { id, productData, imageURL } = req.body;
 
-            if (!id || !productName || newPrice === undefined || oldPrice === undefined || !category) {
+            if (!id || !productData.productName || productData.newPrice === undefined 
+                || productData.oldPrice === undefined || !productData.category || imageURL.length === 0) {
                 return res.status(400).json({ success: false, error: "Missing required fields!" });
             }
 

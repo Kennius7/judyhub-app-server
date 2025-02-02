@@ -23,6 +23,7 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         try {
             const { id, productData, imageURL } = req.body;
+            console.log("ImageURL:>>>>", imageURL);
 
             if (!id || !productData.productName || productData.newPrice === undefined 
                 || productData.oldPrice === undefined || !productData.category || imageURL.length === 0) {
@@ -36,16 +37,6 @@ export default async function handler(req, res) {
                 console.log("Document does not exist!");
                 return res.status(400).json({ success: false, error: "Document does not exist!" });
             }
-
-            // const updatedData = {
-            //     id: id,
-            //     name: productName,
-            //     category: category,
-            //     tags: tags,
-            //     image: imageUrl,
-            //     newPrice: newPrice,
-            //     oldPrice: oldPrice,
-            // };
 
             const currentData = docSnap.data();
             if (!currentData.allProducts || !Array.isArray(currentData.allProducts)) {
@@ -65,9 +56,6 @@ export default async function handler(req, res) {
                     : item
             );
 
-            // const updatedArray = currentData.allProducts.map(item => {
-            //     item.id === id ? { ...item, ...updatedData } : item 
-            // });
             await updateDoc(docRef, { allProducts: updatedArray });
             const message = `Successfully posted product data`;
             console.log(message);

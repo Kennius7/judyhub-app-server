@@ -53,7 +53,15 @@ export default async function handler(req, res) {
             }
             const updatedArray = currentData.allProducts.map((item) =>
                 item.id === id
-                    ? { ...item, name: productName, category, tags, image: imageUrl, newPrice, oldPrice }
+                    ? { 
+                        ...item, 
+                        name: productData.productName, 
+                        newPrice: productData.newPrice, 
+                        oldPrice: productData.oldPrice, 
+                        category: productData.category, 
+                        tags: productData.tags, 
+                        image: imageURL 
+                    }
                     : item
             );
 

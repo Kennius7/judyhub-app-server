@@ -22,11 +22,11 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { id, productData } = req.body;
-            console.log("ImageURL:>>>>", productData.image);
+            const { id, updatedData } = req.body;
+            console.log("ImageURL:>>>>", updatedData.image);
 
-            if (!id || !productData.productName || productData.newPrice === undefined 
-                || productData.oldPrice === undefined || !productData.category || productData.image.length === 0) {
+            if (!id || !updatedData.productName || updatedData.newPrice === undefined 
+                || updatedData.oldPrice === undefined || !updatedData.category || updatedData.image.length === 0) {
                 return res.status(400).json({ success: false, error: "Missing required fields!" });
             }
 
@@ -46,12 +46,12 @@ export default async function handler(req, res) {
                 item.id === id
                     ? { 
                         ...item, 
-                        name: productData.productName, 
-                        newPrice: productData.newPrice, 
-                        oldPrice: productData.oldPrice, 
-                        category: productData.category, 
-                        tags: productData.tags, 
-                        image: productData.image, 
+                        name: updatedData.productName, 
+                        newPrice: updatedData.newPrice, 
+                        oldPrice: updatedData.oldPrice, 
+                        category: updatedData.category, 
+                        tags: updatedData.tags, 
+                        image: updatedData.image, 
                     }
                     : item
             );

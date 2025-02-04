@@ -21,6 +21,7 @@ export default async function handler(req, res) {
     if (req.method === "DELETE") {
         try {
             if (!req.body || !req.body.ids) {
+                console.log("Request body is missing or invalid.");
                 return res.status(400).json({ success: false, message: "Request body is missing or invalid." });
             }
 
@@ -29,6 +30,7 @@ export default async function handler(req, res) {
             if (!Array.isArray(ids)) { ids = [ids] }
 
             if (!ids || !Array.isArray(ids) || ids.length === 0) {
+                console.log("Invalid or empty ID list");
                 return res.status(400).json({ success: false, message: "Invalid or empty ID list" });
             }
 

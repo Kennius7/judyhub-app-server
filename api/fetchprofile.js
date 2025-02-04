@@ -36,20 +36,33 @@ export default async function handler(req, res) {
 
     // Fetching User Data Block
     if (req.method === "GET") {
-        const token = req.headers.authorization.split('Bearer ')[1];
-        if (!token) { return res.status(401).send("Access Denied!") };
+        // const token = req.headers.authorization.split('Bearer ')[1];
+        // if (!token) { return res.status(401).send("Access Denied!") };
 
-        const user = jwt.verify(token, judyhubAppSecretKey, (err, user) => {
-            if (err) return res.status(403).send("Invalid Token!");
-            req.user = user;
-            const userData = req.user;
-            return userData;
-        })
+        const authHeader = req.headers.authorization;
+            if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                console.log("Access Denied: No token provided");
+                return res.status(401).json({ success: false, message: "Access Denied: No token provided" });
+            }
+
+            const token = authHeader.split("Bearer ")[1];
+            const user = jwt.verify(token, judyhubAppSecretKey);
+            if (!user || !user.email) {
+                console.log("Access Denied: Invalid token");
+                return res.status(403).json({ success: false, message: "Invalid token" });
+            }
+
+        // const user = jwt.verify(token, judyhubAppSecretKey, (err, user) => {
+        //     if (err) return res.status(403).send("Invalid Token!");
+        //     req.user = user;
+        //     const userData = req.user;
+        //     return userData;
+        // })
 
         try {
-            const userEmail = user.email;
+            // const userEmail = user.email;
             console.log("User: >>>>>", user);
-            const q = query(collection(db, "User_Data"), where("email", "==", userEmail));
+            const q = query(collection(db, "User_Data"), where("email", "==", user.email));
             const querySnapshot = await getDocs(q);
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);

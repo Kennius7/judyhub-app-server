@@ -34,7 +34,7 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, message: "Invalid or empty ID list" });
             }
 
-            const deletePromises = ids.map(id => deleteDoc(doc(db, "judyhub-products", id)));
+            const deletePromises = ids.map(id => deleteDoc(doc(db, "judyhub-products", id.toString())));
             await Promise.all(deletePromises);
 
             console.log(`✅ Deleted product with IDs: ${ids}`);

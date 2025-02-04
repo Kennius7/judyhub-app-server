@@ -1,4 +1,4 @@
-const { updateDoc, doc } = require("firebase/firestore");
+const { updateDoc, getDoc, doc } = require("firebase/firestore");
 const { db } = require("../FirebaseConfig.js");
 require('dotenv').config();
 

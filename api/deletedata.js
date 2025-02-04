@@ -20,15 +20,21 @@ export default async function handler(req, res) {
 
     if (req.method === "DELETE") {
         try {
-            const { ids } = req.body;
+            if (!req.body || !req.body.ids) {
+                return res.status(400).json({ success: false, message: "Request body is missing or invalid." });
+            }
+
+            let { ids } = req.body;
+
+            if (!Array.isArray(ids)) { ids = [ids] }
+
             if (!ids || !Array.isArray(ids) || ids.length === 0) {
                 return res.status(400).json({ success: false, message: "Invalid or empty ID list" });
             }
+
             const deletePromises = ids.map(id => deleteDoc(doc(db, "judyhub-products", id)));
             await Promise.all(deletePromises);
 
-            // if (!id) { return res.status(400).json({ success: false, message: "Missing product ID" }) }
-            // await deleteDoc(doc(db, "judyhub-products", id));
             console.log(`✅ Deleted product with IDs: ${ids}`);
             return res.status(200).json({ success: true, message: "Product(s) deleted successfully" });
         } catch (error) {

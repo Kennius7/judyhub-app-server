@@ -20,15 +20,21 @@ export default async function handler(req, res) {
 
     if (req.method === "DELETE") {
         try {
-            const { id } = req.body;
-            if (!id) { return res.status(400).json({ success: false, message: "Missing product ID" }) }
-            await deleteDoc(doc(db, "judyhub-products", id));
-            console.log(`✅ Deleted product with ID: ${id}`);
-            return res.status(200).json({ success: true, message: "Product deleted successfully" });
+            const { ids } = req.body;
+            if (!ids || !Array.isArray(ids) || ids.length === 0) {
+                return res.status(400).json({ success: false, message: "Invalid or empty ID list" });
+            }
+            const deletePromises = ids.map(id => deleteDoc(doc(db, "judyhub-products", id)));
+            await Promise.all(deletePromises);
+
+            // if (!id) { return res.status(400).json({ success: false, message: "Missing product ID" }) }
+            // await deleteDoc(doc(db, "judyhub-products", id));
+            console.log(`✅ Deleted product with IDs: ${ids}`);
+            return res.status(200).json({ success: true, message: "Product(s) deleted successfully" });
         } catch (error) {
             console.log("Checking ERROR FETCHING...", res.statusCode, error.message);
-            console.error("❌ Error deleting product:", error.message);
-            return res.status(500).json({ success: false, message: `Couldn't delete product. Error: ${error.message}` });
+            console.error("❌ Error deleting product(s):", error.message);
+            return res.status(500).json({ success: false, message: `Couldn't delete product(s). Error: ${error.message}` });
         }
     }
 

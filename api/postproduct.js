@@ -22,11 +22,11 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { id, productData, imageUrl } = req.body;
-            console.log("ImageURL:>>>>", imageUrl);
+            const { id, productData } = req.body;
+            console.log("ImageURL:>>>>", productData.image);
 
             if (!id || !productData.productName || productData.newPrice === undefined 
-                || productData.oldPrice === undefined || !productData.category || imageUrl.length === 0) {
+                || productData.oldPrice === undefined || !productData.category || productData.image.length === 0) {
                 return res.status(400).json({ success: false, error: "Missing required fields!" });
             }
 
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                         oldPrice: productData.oldPrice, 
                         category: productData.category, 
                         tags: productData.tags, 
-                        image: imageUrl 
+                        image: productData.image, 
                     }
                     : item
             );
@@ -72,6 +72,4 @@ export default async function handler(req, res) {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 }
-
-
 

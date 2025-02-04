@@ -6,20 +6,20 @@ require('dotenv').config();
 
 
 
-const shosanAppSecretKey = process.env.SHOSAN_APP_SECRET_KEY;
+const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
 
-const admin = require("firebase-admin");
+// const admin = require("firebase-admin");
 
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert({
-            projectId: process.env.FIREBASE_PROJECT_ID,
-            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-            privateKey: process.env.FIREBASE_SERVICE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        }),
-        databaseURL: 'https://shosan-acodemia-app.firebaseio.com',
-    });
-}
+// if (!admin.apps.length) {
+//     admin.initializeApp({
+//         credential: admin.credential.cert({
+//             projectId: process.env.FIREBASE_PROJECT_ID,
+//             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+//             privateKey: process.env.FIREBASE_SERVICE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+//         }),
+//         databaseURL: 'https://shosan-acodemia-app.firebaseio.com',
+//     });
+// }
 
 export default async function handler(req, res) {
     console.log("Checking...");
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         const token = req.headers.authorization.split('Bearer ')[1];
         if (!token) { return res.status(401).send("Access Denied!") };
 
-        const user = jwt.verify(token, shosanAppSecretKey, (err, user) => {
+        const user = jwt.verify(token, judyhubAppSecretKey, (err, user) => {
             if (err) return res.status(403).send("Invalid Token!");
             req.user = user;
             const userData = req.user;
@@ -53,14 +53,11 @@ export default async function handler(req, res) {
             const querySnapshot = await getDocs(q);
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
-            const { name, email, number, batchNum, courseDetails, courseProgress, id } = filteredData[0];
+            const { name, email, number, id } = filteredData[0];
             const fetchedData = {
                 name: name, 
                 email: email, 
-                number: number, 
-                batchNum: batchNum, 
-                courseDetails: courseDetails, 
-                courseProgress: courseProgress,
+                number: number,
                 id: id,
             };
 

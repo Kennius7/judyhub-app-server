@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                         oldPrice: productData.oldPrice, 
                         category: productData.category, 
                         tags: productData.tags, 
-                        image: imageURL 
+                        image: imageUrl 
                     }
                     : item
             );

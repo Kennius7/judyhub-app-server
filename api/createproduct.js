@@ -46,7 +46,16 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: "Invalid product structure in database!" });
             }
 
-            const updatedArray = currentData.allProducts.push({ updatedData });
+            // const updatedArray = currentData.allProducts.push({ updatedData });
+            const updatedArray = [...currentData.allProducts, {
+                name: updatedData.productName, 
+                newPrice: updatedData.newPrice, 
+                oldPrice: updatedData.oldPrice, 
+                category: updatedData.category, 
+                tags: updatedData.tags, 
+                image: updatedData.image, 
+                id: updatedData.id,
+            }];
 
             // const updatedArray = currentData.allProducts.map((item) =>
             //     item.id === updatedData.id

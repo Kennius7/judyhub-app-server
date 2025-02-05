@@ -46,23 +46,23 @@ export default async function handler(req, res) {
                 return res.status(400).json({ success: false, error: "Invalid product structure in database!" });
             }
 
-            const updatedArray = currentData.allProducts.push(updatedData);
+            // const updatedArray = currentData.allProducts.push(updatedData);
 
-            // const updatedArray = currentData.allProducts.map((item) =>
-            //     item.id !== id
-            //         ? 
-            //         { 
-            //             ...item, 
-            //             name: updatedData.productName, 
-            //             newPrice: updatedData.newPrice, 
-            //             oldPrice: updatedData.oldPrice, 
-            //             category: updatedData.category, 
-            //             tags: updatedData.tags, 
-            //             image: updatedData.image, 
-            //             id: updatedData.id,
-            //         }
-            //         : item
-            // );
+            const updatedArray = currentData.allProducts.map((item) =>
+                item.id !== updatedData.id
+                    ? 
+                    { 
+                        ...item, 
+                        name: updatedData.productName, 
+                        newPrice: updatedData.newPrice, 
+                        oldPrice: updatedData.oldPrice, 
+                        category: updatedData.category, 
+                        tags: updatedData.tags, 
+                        image: updatedData.image, 
+                        id: updatedData.id,
+                    }
+                    : item
+            );
 
             await updateDoc(docRef, { allProducts: updatedArray });
             const message = `Successfully posted product data`;

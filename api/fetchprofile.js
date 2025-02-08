@@ -24,9 +24,6 @@ export default async function handler(req, res) {
 
     // Fetching User Data Block
     if (req.method === "GET") {
-        // const token = req.headers.authorization.split('Bearer ')[1];
-        // if (!token) { return res.status(401).send("Access Denied!") };
-
         const authHeader = req.headers.authorization;
             if (!authHeader || !authHeader.startsWith("Bearer ")) {
                 console.log("Access Denied: No token provided");
@@ -40,25 +37,18 @@ export default async function handler(req, res) {
                 return res.status(403).json({ success: false, message: "Invalid token" });
             }
 
-        // const user = jwt.verify(token, judyhubAppSecretKey, (err, user) => {
-        //     if (err) return res.status(403).send("Invalid Token!");
-        //     req.user = user;
-        //     const userData = req.user;
-        //     return userData;
-        // })
-
         try {
-            // const userEmail = user.email;
             console.log("User: >>>>>", user);
             const q = query(collection(db, "User_Data"), where("email", "==", user.email));
             const querySnapshot = await getDocs(q);
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
-            const { name, email, number, image } = filteredData[0];
+            const { name, email, number, image, address } = filteredData[0];
             const fetchedData = {
                 name: name, 
                 email: email, 
                 number: number,
+                address: address,
                 image: image,
             };
 

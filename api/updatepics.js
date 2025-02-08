@@ -1,5 +1,5 @@
 
-const { collection, addDoc, doc, query, where, getDocs, getDoc } = require("firebase/firestore");
+const { collection, updateDoc, doc, query, where, getDocs } = require("firebase/firestore");
 const { db } = require("../FirebaseConfig.js");
 
 require('dotenv').config();
@@ -51,8 +51,7 @@ export default async function handler(req, res) {
             return res.status(200).json({ success: true, message: message });
         } catch (error) {
             console.log("Checking POST Method ERROR...", res.statusCode, error.message);
-
-            return res.status(400).json({ success: false, error: errorMessage });
+            return res.status(500).json({ error: `Error: ${error.message}` });
 
         }
     }

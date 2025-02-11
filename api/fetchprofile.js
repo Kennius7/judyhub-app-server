@@ -59,8 +59,10 @@ export default async function handler(req, res) {
                 return res.status(401).json({ success: false, message: "Unauthorized!" });
             }
     
-            const decodedToken = admin.auth().verifyIdToken(token, true);
-            const user = await admin.auth().getUser(decodedToken.uid);
+            // const decodedToken = admin.auth().verifyIdToken(token, true);
+            // const user = await admin.auth().getUser(decodedToken.uid);
+
+            const user = jwt.verify(token, judyhubAppSecretKey);
 
             console.log("User: >>>>>", user);
             const q = query(collection(db, "User_Data"), where("email", "==", user.email));

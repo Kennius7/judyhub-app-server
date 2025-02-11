@@ -25,6 +25,7 @@ export default async function handler(req, res) {
             const { profileFormData } = req.body;
             
             if (profileFormData?.email?.length === 0) {
+                console.log("Data not found!");
                 return res.status(400).json({ success: false, error: "Data not found!" });
             }
 

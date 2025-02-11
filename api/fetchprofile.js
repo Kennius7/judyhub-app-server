@@ -63,7 +63,7 @@ export default async function handler(req, res) {
             // const user = await admin.auth().getUser(decodedToken.uid);
 
             // const user = jwt.verify(token, judyhubAppSecretKey);
-            const user = jwt.verify(token, shosanAppSecretKey, (err, user) => {
+            const user = jwt.verify(token, judyhubAppSecretKey, (err, user) => {
                 if (err) return res.status(403).send("Invalid Token!");
                 req.user = user;
                 const userData = req.user;

@@ -20,6 +20,16 @@ if (!admin.apps.length) {
     console.log("Firebase Admin Initialized");
 }
 
+const generateCustomToken = async (uid) => {
+    try {
+        const customToken = await admin.auth().createCustomToken(uid);
+        console.log("Generated Custom Token:", customToken);
+        return customToken;
+    } catch (error) {
+        console.error("Error generating custom token:", error);
+    }
+};
+
 
 export default async function handler(req, res) {
     console.log("Checking...");
@@ -41,11 +51,12 @@ export default async function handler(req, res) {
             const newUser = await signInWithEmailAndPassword(auth, email, password);
             
             if (!newUser || !newUser.user) {
-                return res.status(401).json({ success: false, error: "Invalid credentials" });
+                return res.status(401).json({ success: false, message: "Invalid credentials" });
             }
 
-            const userInfo = { email: newUser.user.email, uid: newUser.user.uid };
-            const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1min" });
+            // const userInfo = { email: newUser.user.email, uid: newUser.user.uid };
+            // const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1min" });
+            const token = generateCustomToken(newUser?.user?.uid);
             console.log("Token: >>>", token);
             const message = `Welcome, ${newUser.user.displayName ? newUser.user.displayName.split(" ")[0] : "User"}`;
             console.log(message);

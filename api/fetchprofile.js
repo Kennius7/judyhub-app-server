@@ -1,12 +1,24 @@
 
 const { query, collection, where, getDocs } = require("firebase/firestore");
 const { db } = require("../FirebaseConfig.js");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
+const admin = require("firebase-admin");
+
 require('dotenv').config();
 
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_SERVICE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        }),
+        databaseURL: 'https://judy-hub-ecommerce.firebaseio.com',
+    });
+    console.log("Firebase Admin Initialized");
+}
 
-
-const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
+// const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
 
 
 export default async function handler(req, res) {
@@ -24,22 +36,32 @@ export default async function handler(req, res) {
 
     // Fetching User Data Block
     if (req.method === "GET") {
-        const authHeader = req.headers.authorization;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            console.log("Access Denied: No token provided");
-            return res.status(401).json({ success: false, message: "Access Denied: No token provided" });
-        }
-
-        const token = authHeader.split("Bearer ")[1];
-        const user = jwt.verify(token, judyhubAppSecretKey);
-        console.log("User: >>>>>", user);
-        if (!user || !user.email) {
-            console.log("Access Denied: Invalid token");
-            return res.status(403).json({ success: false, message: "Invalid token" });
-        }
+        // const user = jwt.verify(token, judyhubAppSecretKey);
+        // console.log("User: >>>>>", user);
+        // if (!user || !user.email) {
+        //     console.log("Access Denied: Invalid token");
+        //     return res.status(403).json({ success: false, message: "Invalid token" });
+        // }
 
         try {
+            const authHeader = req.headers.authorization;
+
+            if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                console.log("Access Denied: No token provided");
+                return res.status(401).json({ success: false, message: "Access Denied: No token provided" });
+            }
+    
+            const token = authHeader.split("Bearer ")[1];
+    
+            if (!token) {
+                console.log("Access Denied: No token detected!");
+                return res.status(401).json({ success: false, message: "Unauthorized!" });
+            }
+    
+            const decodedToken = admin.auth().verifyIdToken(token, true);
+            const user = await admin.auth().getUser(decodedToken.uid);
+
             console.log("User: >>>>>", user);
             const q = query(collection(db, "User_Data"), where("email", "==", user.email));
             const querySnapshot = await getDocs(q);

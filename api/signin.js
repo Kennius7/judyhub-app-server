@@ -55,7 +55,7 @@ export default async function handler(req, res) {
             }
 
             const userInfo = { email: newUser.user.email, uid: newUser.user.uid };
-            const token = jwt.sign(userInfo, judyhubAppSecretKey, { algorithm: "RS256", expiresIn: "1min" });
+            const token = jwt.sign(userInfo, judyhubAppSecretKey, { expiresIn: "1min" });
             console.log("User: >>>>>", newUser.user.displayName);
             // const token = await generateCustomToken(newUser.user.uid);
             console.log("Token: >>>", token);

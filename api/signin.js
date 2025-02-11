@@ -17,6 +17,7 @@ if (!admin.apps.length) {
         }),
         databaseURL: 'https://judy-hub-ecommerce.firebaseio.com',
     });
+    console.log("Firebase Admin Initialized");
 }
 
 

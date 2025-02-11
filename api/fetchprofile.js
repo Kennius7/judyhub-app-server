@@ -25,17 +25,19 @@ export default async function handler(req, res) {
     // Fetching User Data Block
     if (req.method === "GET") {
         const authHeader = req.headers.authorization;
-            if (!authHeader || !authHeader.startsWith("Bearer ")) {
-                console.log("Access Denied: No token provided");
-                return res.status(401).json({ success: false, message: "Access Denied: No token provided" });
-            }
 
-            const token = authHeader.split("Bearer ")[1];
-            const user = jwt.verify(token, judyhubAppSecretKey);
-            if (!user || !user.email) {
-                console.log("Access Denied: Invalid token");
-                return res.status(403).json({ success: false, message: "Invalid token" });
-            }
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            console.log("Access Denied: No token provided");
+            return res.status(401).json({ success: false, message: "Access Denied: No token provided" });
+        }
+
+        const token = authHeader.split("Bearer ")[1];
+        const user = jwt.verify(token, judyhubAppSecretKey);
+        console.log("User: >>>>>", user);
+        if (!user || !user.email) {
+            console.log("Access Denied: Invalid token");
+            return res.status(403).json({ success: false, message: "Invalid token" });
+        }
 
         try {
             console.log("User: >>>>>", user);
@@ -56,7 +58,7 @@ export default async function handler(req, res) {
             return res.status(200).json({ data: fetchedData, message: "Data was fetched successfully" });
         } catch (error) {
             console.log("Checking ERROR FETCHING...", res.statusCode, error.message);
-            return res.json({ error: `Couldn't fetch Data. Error: ${error.message}` });
+            return res.status(500).json({ success: false, message: `Couldn't fetch Data. Error: ${error.message}` });
         }
     }
 

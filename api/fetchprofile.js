@@ -1,7 +1,7 @@
 
 const { query, collection, where, getDocs } = require("firebase/firestore");
 const { db } = require("../FirebaseConfig.js");
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const admin = require("firebase-admin");
 
 require('dotenv').config();
@@ -18,7 +18,7 @@ if (!admin.apps.length) {
     console.log("Firebase Admin Initialized");
 }
 
-// const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
+const judyhubAppSecretKey = process.env.JUDYHUB_APP_SECRET_KEY;
 
 
 export default async function handler(req, res) {

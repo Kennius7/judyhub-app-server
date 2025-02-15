@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     // Signing In Block
     if (req.method === "POST") {
         try {
-            const { name, email, number, password } = req.body;
+            const { name, email, number, password, address, image, cartData } = req.body;
 
             if (!name || !email || !number || !password) {
                 return res.status(400).json({ success: false, error: "All fields are required" });
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
             const authInstance = getAuth();
             const newUser = await createUserWithEmailAndPassword(authInstance, email, password);
             await updateProfile(newUser.user, { displayName: name });
-            await addDoc(collection(db, "User_Data"), { name, email, number });
+            await addDoc(collection(db, "User_Data"), { name, email, number, address, image, cartData });
             console.log("User Created:", newUser.user.email);
             console.log(newUser);
             const displayName = newUser?.user?.displayName.split(" ")[0] || "User";

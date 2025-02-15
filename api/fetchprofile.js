@@ -76,13 +76,14 @@ export default async function handler(req, res) {
             const querySnapshot = await getDocs(q);
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Filtered Data: ", filteredData);
-            const { name, email, number, image, address } = filteredData[0];
+            const { name, email, number, image, address, cartData } = filteredData[0];
             const fetchedData = {
                 name: name, 
                 email: email, 
                 number: number,
                 address: address,
                 image: image,
+                cartData: cartData,
             };
 
             console.log("Fetched Data: >>>", fetchedData);

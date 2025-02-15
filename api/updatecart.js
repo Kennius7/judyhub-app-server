@@ -19,16 +19,15 @@ export default async function handler(req, res) {
         return;
     }
 
-    // Signing In Block
+    // Update Cart Block
     if (req.method === "POST") {
         try {
-            const { updatedData } = req.body;
-            
-            if (updatedData?.email?.length === 0) {
-                return res.status(400).json({ success: false, error: "Data not found!" });
+            if (!req.body) {
+                console.log("Request body is missing or invalid.");
+                return res.status(400).json({ success: false, message: "Request body is missing or invalid." });
             }
 
-            const { email, cartData } = updatedData;
+            const { email, cartData } = req.body;
             let id = "";
             let userData;
             console.log("Email:>>>>", email);

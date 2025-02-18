@@ -8,6 +8,7 @@ require('dotenv').config();
 
 export default async function handler(req, res) {
     console.log("Checking...");
+    console.log("Request API Type:>>>", req.body.apiType);
 
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");

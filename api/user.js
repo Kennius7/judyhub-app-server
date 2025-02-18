@@ -146,9 +146,10 @@ export default async function handler(req, res) {
     }
 
     // Fetch User Data Block
-    if (req.method === "POST" && req.body.apiType === "FETCHUSERDATA") {
+    if (req.method === "GET" && req.query.apiType === "FETCHUSERDATA") {
         try {
             const authHeader = req.headers.authorization;
+            console.log("AUTH:>>>>", authHeader);
 
             if (!authHeader || !authHeader.startsWith("Bearer ")) {
                 console.log("Access Denied: No token provided");

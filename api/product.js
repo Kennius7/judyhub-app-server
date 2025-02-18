@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     }
 
     //Fetch Products Data Block
-    if (req.method === "GET" && req?.body?.apiType === "GETPRODUCTS") {
+    if (req.method === "POST" && req.body.apiType === "GETPRODUCTS") {
         try {
             const querySnapshot = await getDocs(collection(db, "judyhub-products"));
             const filteredData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));

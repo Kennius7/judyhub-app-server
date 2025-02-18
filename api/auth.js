@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     }
 
     // Signing Up Block
-    if (req.method === "POST" && req.body.apiType === "SIGNUP") {
+    if (req.method === "POST" && req?.body?.apiType === "SIGNUP") {
         try {
             const { name, email, number, password, address, image, cartData } = req.body;
 
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     }
 
     // Signing In Block
-    if (req.method === "POST" && req.body.apiType === "SIGNIN") {
+    if (req.method === "POST" && req?.body?.apiType === "SIGNIN") {
         try {
             const { email, password } = req.body;
             const newUser = await signInWithEmailAndPassword(auth, email, password);
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
     }
 
     // Signing Out Block
-    if (req.method === "POST" && req.body.apiType === "SIGNOUT") {
+    if (req.method === "POST" && req?.body?.apiType === "SIGNOUT") {
         try {
             const { name } = req.body;
             await signOut(auth);

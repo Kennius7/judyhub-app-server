@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     }
 
     // Update Profile Block
-    if (req.method === "POST" && req.body.apiType === "UPDATEUSER") {
+    if (req.method === "POST" && req?.body?.apiType === "UPDATEUSER") {
         try {
             const { profileFormData } = req.body;
             
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     }
 
     // Update Profile Picture Block
-    if (req.method === "POST" && req.body.apiType === "UPDATEPICS") {
+    if (req.method === "POST" && req?.body?.apiType === "UPDATEPICS") {
         try {
             const { updatedData } = req.body;
             
@@ -110,7 +110,7 @@ export default async function handler(req, res) {
     }
 
     // Update Cart Block
-    if (req.method === "POST" && req.body.apiType === "UPDATECART") {
+    if (req.method === "POST" && req?.body?.apiType === "UPDATECART") {
         try {
             if (!req.body) {
                 console.log("Request body is missing or invalid.");
@@ -146,7 +146,7 @@ export default async function handler(req, res) {
     }
 
     // Fetch User Data Block
-    if (req.method === "GET" && req.body.apiType === "FETCHUSERDATA") {
+    if (req.method === "GET" && req?.body?.apiType === "FETCHUSERDATA") {
         try {
             const authHeader = req.headers.authorization;
 

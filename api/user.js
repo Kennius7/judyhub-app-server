@@ -146,7 +146,7 @@ export default async function handler(req, res) {
     }
 
     // Fetch User Data Block
-    if (req.method === "GET" && req?.body?.apiType === "FETCHUSERDATA") {
+    if (req.method === "POST" && req.body.apiType === "FETCHUSERDATA") {
         try {
             const authHeader = req.headers.authorization;
 

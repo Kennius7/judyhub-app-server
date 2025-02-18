@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     }
 
     // Update Profile Block
-    if (req.method === "POST" && !req.body.apiType) {
+    if (req.method === "POST" && req.body.apiType === "UPDATEUSER") {
         try {
             const { profileFormData } = req.body;
             

@@ -84,6 +84,7 @@ export default async function handler(req, res) {
                         category: updatedData.category, 
                         tags: updatedData.tags, 
                         image: updatedData.image, 
+                        description: updatedData.description, 
                     }
                     : item
             );
@@ -134,6 +135,7 @@ export default async function handler(req, res) {
                 tags: updatedData.tags, 
                 image: updatedData.image, 
                 id: updatedData.id,
+                description: updatedData.description,
             }];
 
             await updateDoc(docRef, { allProducts: updatedArray });

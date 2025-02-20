@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     }
 
     // Edit Product Block
-    if (req.method === "POST" && req?.body?.apiType === "EDITPRODUCTS") {
+    if (req.method === "POST" && req.body.apiType === "EDITPRODUCTS") {
         try {
             const { id, updatedData } = req.body;
             console.log("ImageURL:>>>>", updatedData.image);
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     }
 
     // Add New Product Block
-    if (req.method === "POST" && req?.body?.apiType === "ADDPRODUCT") {
+    if (req.method === "POST" && req.body.apiType === "ADDPRODUCT") {
         try {
             const { updatedData } = req.body;
             console.log("ImageURL:>>>>", updatedData.image);

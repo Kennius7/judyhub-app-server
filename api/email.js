@@ -6,7 +6,7 @@ const getSymbolFromCurrency = require("currency-symbol-map");
 const userEmail = process.env.NODEMAILER_USER_EMAIL;
 const userEmail1 = process.env.NODEMAILER_USER_EMAIL1;
 const userPassword = process.env.NODEMAILER_USER_PASSWORD;
-const { NGN } = getSymbolFromCurrency("NGN");
+const NGN = getSymbolFromCurrency("NGN");
 
 export const formatNumber = (num) => {
     let [integerPart, decimalPart] = num.toString().split(".");

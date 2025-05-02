@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-import getSymbolFromCurrency from "currency-symbol-map";
+const getSymbolFromCurrency = require("currency-symbol-map");
 
 
 const userEmail = process.env.NODEMAILER_USER_EMAIL;

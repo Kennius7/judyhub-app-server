@@ -82,10 +82,10 @@ export default async function handler(req, res) {
         const htmlEmail = `
             <html>
                 <body>
-                    <p>${name.split(" ")[0]} just sent an email.</p>
+                    <p>${name.split(" ")[0]} just sent an order.</p>
                     <p>Email address: ${email}</p>
                     <p>Product Purchase Details:</p>
-                    <p>Email: ${fullMessage}</p>
+                    <p>${fullMessage}</p>
                 </body>
             </html>
         `;

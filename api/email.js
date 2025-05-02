@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     
         const mailOptions = {
             from: userEmail,
-            to: [userEmail, userEmail1],
+            to: userEmail,
             subject: subject,
             html: htmlEmail,
         }
@@ -64,6 +64,24 @@ export default async function handler(req, res) {
             return res.status(500).json({ success: false, message: 'Internal Server Error' });
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Email Endpoint for JUDYHUB Landing page
     if (req.method === "POST" && req.body.apiType === "LANDING") {
@@ -94,7 +112,7 @@ export default async function handler(req, res) {
 
         const mailOptions = {
             from: userEmail,
-            to: userEmail,
+            to: [userEmail, userEmail1],
             subject: `Product Purchase Details for ${name.split(" ")[0]}`,
             html: htmlEmail,
         }

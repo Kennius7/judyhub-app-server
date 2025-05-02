@@ -1,10 +1,18 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+import getSymbolFromCurrency from "currency-symbol-map";
 
 
 const userEmail = process.env.NODEMAILER_USER_EMAIL;
 const userEmail1 = process.env.NODEMAILER_USER_EMAIL1;
 const userPassword = process.env.NODEMAILER_USER_PASSWORD;
+const { NGN } = getSymbolFromCurrency("NGN");
+
+export const formatNumber = (num) => {
+    let [integerPart, decimalPart] = num.toString().split(".");
+    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
+}
 
 
 export default async function handler(req, res) {
@@ -105,7 +113,7 @@ export default async function handler(req, res) {
                     <p>Email address: ${email}</p>
                     <p>Product Purchase Details:</p>
                     <p>${fullMessage}</p>
-                    <p>Total Amount: N${totalCartPrice}</p>
+                    <p>Total Amount: ${NGN}${formatNumber(totalCartPrice)}</p>
                 </body>
             </html>
         `;

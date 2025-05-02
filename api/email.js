@@ -3,6 +3,7 @@ require('dotenv').config();
 
 
 const userEmail = process.env.NODEMAILER_USER_EMAIL;
+const userEmail1 = process.env.NODEMAILER_USER_EMAIL1;
 const userPassword = process.env.NODEMAILER_USER_PASSWORD;
 
 
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
     
         const mailOptions = {
             from: userEmail,
-            to: userEmail,
+            to: [userEmail, userEmail1],
             subject: subject,
             html: htmlEmail,
         }
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
 
     // Email Endpoint for JUDYHUB Landing page
     if (req.method === "POST" && req.body.apiType === "LANDING") {
-        const { name, email, fullMessage, } = req.body;
+        const { name, email, fullMessage, totalCartPrice } = req.body;
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -86,6 +87,7 @@ export default async function handler(req, res) {
                     <p>Email address: ${email}</p>
                     <p>Product Purchase Details:</p>
                     <p>${fullMessage}</p>
+                    <p>Total Amount: N${totalCartPrice}</p>
                 </body>
             </html>
         `;

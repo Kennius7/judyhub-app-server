@@ -93,7 +93,7 @@ export default async function handler(req, res) {
 
     // Email Endpoint for JUDYHUB Landing page
     if (req.method === "POST" && req.body.apiType === "LANDING") {
-        const { name, email, fullMessage, totalCartPrice } = req.body;
+        const { name, email, message, fullMessage, totalCartPrice } = req.body;
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -111,7 +111,7 @@ export default async function handler(req, res) {
                 <body>
                     <p>${name.split(" ")[0]} just sent an order.</p>
                     <p>Email address: ${email}</p>
-                    <p>Product Purchase Details:</p>
+                    <p>${message}</p>
                     <p>${fullMessage}</p>
                     <p>Total Amount: ${NGN}${formatNumber(totalCartPrice)}</p>
                 </body>

@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         return;
     }
 
-    if (req.method === "POST") {
+    if (req.method === "POST" && req.body.apiType === "MAIN") {
         const formData = req.body;
         const { name, email, number, subject, message } = formData;
 
@@ -50,6 +50,50 @@ export default async function handler(req, res) {
             from: userEmail,
             to: userEmail,
             subject: subject,
+            html: htmlEmail,
+        }
+
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Got here...");
+            console.log("Email sent: >>>>", info.response);
+            return res.status(200).json({ success: true, message: 'Email sent successfully' });
+        } catch (error) {
+            console.error("Error: ", error);
+            return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+    }
+
+    // Email Endpoint for JUDYHUB Landing page
+    if (req.method === "POST" && req.body.apiType === "LANDING") {
+        const { name, email, fullMessage, } = req.body;
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: userEmail,
+                pass: userPassword,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+    
+        const htmlEmail = `
+            <html>
+                <body>
+                    <p>${name.split(" ")[0]} just sent an email.</p>
+                    <p>Email address: ${email}</p>
+                    <p>Product Purchase Details:</p>
+                    <p>Email: ${fullMessage}</p>
+                </body>
+            </html>
+        `;
+
+        const mailOptions = {
+            from: userEmail,
+            to: userEmail,
+            subject: `Product Purchase Details for ${name.split(" ")[0]}`,
             html: htmlEmail,
         }
 
